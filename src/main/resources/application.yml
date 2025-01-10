@@ -2,12 +2,29 @@ server:
   port: 8090
 
 spring:
-  application:
-    name: bz-ootd-service
-  web:
-    resources:
-      static-locations: classpath:/static/
+  datasource:
+    url: jdbc:mysql://localhost:3306/security_basic?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: 1234
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB  # 최대 파일 크기 설정
+      max-request-size: 10MB
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
 
 bzbzo:
   bz-auth-service-url: ${AUTH_SERVICE_URL:http://localhost:8085}/auths
+  bz-seller-service-url: ${SELLER_SERVICE_URL:http://localhost:8088}/
+  bz-ootd-service-url: ${OOTD_SERVICE_URL:http://localhost:8090}/
 
+
+  web:
+    resources:
+      static-locations: classpath:/static/, file:./uploads/
