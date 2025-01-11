@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/ootd")
+@RequestMapping("/ootd/api/ootd")
 public class OotdApiController {
     private final OotdService ootdService;
 
