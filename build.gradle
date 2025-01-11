@@ -42,6 +42,10 @@ dependencies {
     // Validation
     implementation 'org.hibernate.validator:hibernate-validator'
 
+    implementation 'io.github.cdimascio:dotenv-java:3.0.0'
+    //aws s3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.1.RELEASE'
+
     // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
@@ -63,4 +67,7 @@ dependencyManagement {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+tasks.named('jar') {
+    enabled = false
 }
