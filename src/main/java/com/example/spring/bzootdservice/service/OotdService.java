@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 public class OotdService {
     private final OotdRepository ootdRepository;
     private final FileStorageService fileStorageService;
+    private final ImgServiceImpl imgServiceImpl;
 
     // FileStorageService 주입
     @Value("${bzbzo.bz-ootd-service-url}")
@@ -58,14 +60,22 @@ public class OotdService {
 
 
     public void createOotd(OotdRequestDTO ootdRequestDTO, MultipartFile image, String authorization) {
-        // 이미지 저장
-        String imagePath = fileStorageService.storeFile(image);
+
+        // S3에 업로드할 고유한 파일 이름 생성
+        String uniqueFileName = "static/bz-image/" + UUID.randomUUID();
+
+        // S3에 이미지 업로드
+        String imgUrl = imgServiceImpl.uploadImg(uniqueFileName, image);
+
+
+//        // 이미지 저장
+//        String imagePath = fileStorageService.storeFile(image);
 
         // Ootd 엔티티 생성 및 저장
         Ootd ootd = Ootd.builder()
                 .customerId(ootdRequestDTO.getCustomerId()) // 작성자 ID
                 .title(ootdRequestDTO.getTitle())           // 제목
-                .image(imagePath)                          // 이미지 경로
+                .image(imgUrl)                          // 이미지 경로
                 .relProd(ootdRequestDTO.getRelProd())       // 관련 상품 ID
                 .createdAt(LocalDateTime.now())            // 작성 시간
                 .build();
