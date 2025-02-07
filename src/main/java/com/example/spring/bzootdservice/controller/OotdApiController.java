@@ -1,10 +1,10 @@
 package com.example.spring.bzootdservice.controller;
 
-import com.example.spring.bzootdservice.dto.OotdRequestDTO;
 import com.example.spring.bzootdservice.dto.OotdResponseDTO;
 import com.example.spring.bzootdservice.service.OotdService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,23 +13,25 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/ootd/api/ootd")
+@RequestMapping("/ootd")
 public class OotdApiController {
     private final OotdService ootdService;
 
     @GetMapping
-    public ResponseEntity<List<OotdResponseDTO>> getOotdList() {
-        List<OotdResponseDTO> ootdList = ootdService.getAllOotds();
-        return ResponseEntity.ok(ootdList);
+    public List<OotdResponseDTO> getOotdList() {
+        List<OotdResponseDTO> ootdList = ootdService.getOotdList();
+        return ootdList;
     }
 
-    @PostMapping("/write")
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> createOotd(
-            @RequestPart("ootd") OotdRequestDTO ootdRequestDTO,
+            @RequestParam("memberNo") Long memberNo,
+            @RequestParam("tags") String tags,
+            @RequestParam("relProd") String relProd,
             @RequestPart("image") MultipartFile image,
             @RequestHeader(value = "Authorization", required = false) String authorization) {
         try {
-            ootdService.createOotd(ootdRequestDTO, image, authorization);
+            ootdService.createOotd(memberNo, tags, relProd, image, authorization);
             return ResponseEntity.ok("OOTD 작성이 완료되었습니다.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
