@@ -17,14 +17,14 @@ public class Ootd {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "customer_id", nullable = false)
-    private Long customerId;
+    @Column(name = "memberNo", nullable = false)
+    private Long memberNo;
 
-    @Column(name = "image", nullable = true)
-    private String image;
+    @Column(name = "imgUrls", nullable = true)
+    private String imgUrls;
 
     @Column(name = "title", nullable = true)
-    private String title;
+    private String tags;
 
     @Column(name = "rel_prod", nullable = true)
     private String relProd;

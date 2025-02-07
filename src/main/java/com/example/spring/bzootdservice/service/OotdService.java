@@ -1,6 +1,5 @@
 package com.example.spring.bzootdservice.service;
 
-import com.example.spring.bzootdservice.dto.OotdRequestDTO;
 import com.example.spring.bzootdservice.dto.OotdResponseDTO;
 import com.example.spring.bzootdservice.entity.Ootd;
 import com.example.spring.bzootdservice.repository.OotdRepository;
@@ -20,21 +19,18 @@ import java.util.stream.Collectors;
 @Slf4j
 public class OotdService {
     private final OotdRepository ootdRepository;
-    private final FileStorageService fileStorageService;
     private final ImgServiceImpl imgServiceImpl;
 
-    // FileStorageService 주입
-    @Value("${bzbzo.bz-ootd-service-url}")
-    private String ootdServiceBaseUrl; // 환경 변수로 URL을 가져옴
 
-    public List<OotdResponseDTO> getAllOotds() {
+
+    public List<OotdResponseDTO> getOotdList() {
         return ootdRepository.findAll()
                 .stream()
                 .map(ootd -> new OotdResponseDTO(
                         ootd.getId(),
-                        ootd.getCustomerId(),
-                        combineUrl(ootdServiceBaseUrl, ootd.getImage()), // 슬래시 중복 방지
-                        ootd.getTitle(),
+                        ootd.getMemberNo(),
+                        ootd.getImgUrls(), // 슬래시 중복 방지
+                        ootd.getTags(),
                         ootd.getRelProd(),
                         ootd.getHeartNum(),
                         ootd.getCreatedAt()
@@ -59,7 +55,7 @@ public class OotdService {
 
 
 
-    public void createOotd(OotdRequestDTO ootdRequestDTO, MultipartFile image, String authorization) {
+    public void createOotd(Long memberNo, String tags, String relProd, MultipartFile image, String authorization) {
 
         // S3에 업로드할 고유한 파일 이름 생성
         String uniqueFileName = "static/bz-image/" + UUID.randomUUID();
@@ -73,10 +69,10 @@ public class OotdService {
 
         // Ootd 엔티티 생성 및 저장
         Ootd ootd = Ootd.builder()
-                .customerId(ootdRequestDTO.getCustomerId()) // 작성자 ID
-                .title(ootdRequestDTO.getTitle())           // 제목
-                .image(imgUrl)                          // 이미지 경로
-                .relProd(ootdRequestDTO.getRelProd())       // 관련 상품 ID
+                .memberNo(memberNo) // 작성자 ID
+                .tags(tags)           // 태그
+                .imgUrls(imgUrl)                          // 이미지 경로
+                .relProd(relProd)       // 관련 상품 ID
                 .createdAt(LocalDateTime.now())            // 작성 시간
                 .build();
 
