@@ -31,6 +31,7 @@ public class OotdApiController {
             @RequestPart("image") MultipartFile image,
             @RequestHeader(value = "Authorization", required = false) String authorization) {
         try {
+            System.out.println("memberNo: " + memberNo + "tags: " + tags + "relProd: " + relProd);
             ootdService.createOotd(memberNo, tags, relProd, image, authorization);
             return ResponseEntity.ok("OOTD 작성이 완료되었습니다.");
         } catch (Exception e) {
