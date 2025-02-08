@@ -23,6 +23,21 @@ public class OotdApiController {
         return ootdList;
     }
 
+    @GetMapping("/heart/num")
+    int getHeartNum(@RequestParam Long ootdId) {
+        return ootdService.getHeartNum(ootdId);
+    }
+
+    @GetMapping("/like/history")
+    boolean isUserLikedOotd(@RequestParam Long memberNo, @RequestParam Long id){
+        return ootdService.isUserLikedOotd(memberNo, id);
+    }
+
+    @PostMapping("/heart")
+    boolean toggleLike(@RequestParam Long memberNo, @RequestParam Long ootdId){
+        return ootdService.toggleLike(memberNo, ootdId);
+    }
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> createOotd(
             @RequestParam("memberNo") Long memberNo,
