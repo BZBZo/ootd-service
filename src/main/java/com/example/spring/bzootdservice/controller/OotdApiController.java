@@ -23,6 +23,12 @@ public class OotdApiController {
         return ootdList;
     }
 
+    @GetMapping("/recent")
+    List<OotdResponseDTO> getRecentOotds(@RequestParam int i){
+        List<OotdResponseDTO> ootdList = ootdService.getRecentOotds(i);
+        return ootdList;
+    }
+
     @GetMapping("/heart/num")
     int getHeartNum(@RequestParam Long ootdId) {
         return ootdService.getHeartNum(ootdId);
