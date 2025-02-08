@@ -126,6 +126,20 @@ public class OotdService {
         }
     }
 
+    public List<OotdResponseDTO> getRecentOotds(int i) {
+        return ootdRepository.getRecentOotds(i)
+                .stream()
+                .map(ootd -> new OotdResponseDTO(
+                        ootd.getId(),
+                        ootd.getMemberNo(),
+                        ootd.getImgUrls(), // 슬래시 중복 방지
+                        ootd.getTags(),
+                        ootd.getRelProd(),
+                        ootd.getHeartNum(),
+                        ootd.getCreatedAt()
+                ))
+                .collect(Collectors.toList());
+    }
 }
 
 
