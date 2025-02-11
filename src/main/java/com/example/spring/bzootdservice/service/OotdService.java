@@ -140,6 +140,23 @@ public class OotdService {
                 ))
                 .collect(Collectors.toList());
     }
+
+    public List<OotdResponseDTO> getOotdsByUserId(Long userId) {
+        // userId에 해당하는 OOTD 데이터를 조회
+        return ootdRepository.findByMemberNo(userId)
+                .stream()
+                .map(ootd -> new OotdResponseDTO(
+                        ootd.getId(),
+                        ootd.getMemberNo(),
+                        ootd.getImgUrls(), // 슬래시 중복 방지
+                        ootd.getTags(),
+                        ootd.getRelProd(),
+                        ootd.getHeartNum(),
+                        ootd.getCreatedAt()
+                ))
+                .collect(Collectors.toList());
+    }
+
 }
 
 

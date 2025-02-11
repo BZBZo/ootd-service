@@ -26,4 +26,7 @@ public interface OotdRepository extends JpaRepository<Ootd, Long> {
     @Query(value = "SELECT * FROM ootd ORDER BY createdAt DESC LIMIT :limit", nativeQuery = true)
     List<Ootd> getRecentOotds(@Param("limit") int limit);
 
+    // memberNo에 해당하는 OOTD 목록을 가져오는 메서드
+    List<Ootd> findByMemberNo(Long memberNo);
+
 }

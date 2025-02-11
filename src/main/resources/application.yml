@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/bz_ootd?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
     username: root
-    password: 12341234
+    password: 1234
   servlet:
     multipart:
       enabled: true

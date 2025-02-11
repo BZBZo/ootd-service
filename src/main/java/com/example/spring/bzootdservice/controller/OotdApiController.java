@@ -61,4 +61,10 @@ public class OotdApiController {
         }
     }
 
+    @GetMapping("/user/{userId}")
+    public List<OotdResponseDTO> getOotdsByUserId(@PathVariable Long userId) {
+        List<OotdResponseDTO> ootdList = ootdService.getOotdsByUserId(userId);
+        return ootdList;
+    }
+
 }
